@@ -1,0 +1,16 @@
+{
+  "name": "comp2013-group-project",
+  "version": "1.0.0",
+  "scripts": {
+    "backend": "node backend/server.js",
+    "frontend": "npm run dev --prefix frontend",
+    "both": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
