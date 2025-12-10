@@ -4,7 +4,7 @@ const port = 3000;
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Product = require("./models/product");
-require("dotenv").config();
+require("dotenv").config({ path: './backend/.env'});
 const { DB_URI } = process.env;
 
 server.use(cors());
