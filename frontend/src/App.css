@@ -159,3 +159,8 @@ img {
 #edit-button {
   background-color: rgb(76, 43, 226);
 }
+
+.login {
+  width: 50%;
+  margin: 0 auto;
+}
