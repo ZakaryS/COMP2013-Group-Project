@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+const navigate = useNavigate();
+
 import { useState, useEffect } from "react";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
@@ -19,11 +22,24 @@ export default function GroceriesAppContainer() {
   });
   const [isEditing, setIsEditing] = useState(false);
 
+  
   //////////useEffect////////
 
   useEffect(() => {
     handleProductsFromDB();
   }, [postResponse]);
+
+
+  //jump to addproduct page
+  const handleAddProduct = () => navigate("/add-product");
+
+  //clear message go back to "/"
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    navigate("/");
+  };
+
+
 
   ////////Handlers//////////
   const initialProductQuantity = (prods) =>
@@ -199,13 +215,17 @@ export default function GroceriesAppContainer() {
     <div>
       <NavBar quantity={cartList.length} />
       <div className="GroceriesApp-Container">
-        <ProductForm
+        <h2>Welcome, {user.username}</h2>
+      {user.role === "admin" && <button onClick={handleAddProduct}>Add New Product</button>}
+      <button onClick={handleLogout}>Logout</button>
+        {/* ProductForm need to be another page*/}
+        {/* <ProductForm
           handleOnSubmit={handleOnSubmit}
           postResponse={postResponse}
           handleOnChange={handleOnChange}
           formData={formData}
           isEditing={isEditing}
-        />
+        /> */}
         <ProductsContainer
           products={productList}
           handleAddQuantity={handleAddQuantity}

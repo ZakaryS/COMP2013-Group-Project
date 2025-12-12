@@ -2,7 +2,9 @@ export default function NavBar({ quantity }) {
   return (
     <nav className="NavBar">
       <div className="NavDiv NavUser">
-        <h3>Hello, username</h3>
+        <h3>Hello, {username}</h3>
+        {/* logout buttom*/}
+        <button onClick={handleLogout}>Logout</button>
       </div>
       <div className="NavDiv NavTitle">
         <h2>Groceries App 🍎</h2>
