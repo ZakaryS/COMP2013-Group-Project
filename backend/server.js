@@ -6,9 +6,9 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Product = require("./models/product");
-//const User = require("./models/user");
-require("dotenv").config({ path: './backend/.env'});
-const { DB_URI } = process.env;
+const User = require("./models/user");
+require("dotenv").config({ path: './.env'});
+const { DB_URI, SECRET_KEY } = process.env;
 
 server.use(cors());
 server.use(express.json());
@@ -29,17 +29,41 @@ server.get("/", (request, response) => {
   response.send("LIVE!");
 });
 
+//Login existing user route
 server.post("/login", async (request, response) => {
   const { username, password } = request.body;
   try {
     const user = await User.findOne({ username });
-    if (!user) { return response.status({ message: "Username does not exist" }); }
+    if (!user) { return response.status(404).send({ message: "Username does not exist!" }); }
     const match = await bcrypt.compare(password, user.password);
-    if (!match) { return response.status(403).send({ message: "Bad username or password" }); }
-    const jwtToken = jwt.sign({ id: user._id, username, admin }, "monkey");
-    return response.status(201).send({ message: "User Authenticated", token: jwtToken });
+    if (!match) { return response.status(403).send({ message: "Bad username or password!" }); }
+    const jwtToken = jwt.sign({ id: user._id, username, admin }, SECRET_KEY);
+    return response.status(201).send({ message: "User Authenticated!", token: jwtToken });
   } catch (error) { response.status(500).send({ message: error.message }); }
 });
+
+
+
+//Register new user route
+server.post("/create-user", async (request, response) => {
+  const { username, password } = request.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+    });
+    await newUser.save();
+    response.send({ message: `Congrats! ${username} created Successfully!` });
+  } catch (error) {
+    response
+      .status(500)
+      .send({ message: `${username} Already Exists! Please use another Username!`});
+  }
+});
+
+
+
 
 server.get("/products", async (request, response) => {
   try {
