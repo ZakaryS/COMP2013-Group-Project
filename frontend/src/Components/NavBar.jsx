@@ -1,9 +1,8 @@
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-
-export default function NavBar({ quantity }) {
-  const jwtToken = Cookies.get("jwtToken");
-  const user = jwtDecode(jwtToken);
+export default function NavBar({
+  quantity,
+  user,
+  handleLogout,
+}) {
   return (
     <nav className="NavBar">
       <div className="NavDiv NavUser">

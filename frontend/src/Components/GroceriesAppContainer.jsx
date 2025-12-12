@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-const navigate = useNavigate();
-import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import CartContainer from "./CartContainer";
@@ -22,12 +20,24 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-
-  // Cookie
-  const jwtToken = Cookies.get("jwtToken");
-  const user = jwtDecode(jwtToken);
+  const [user, setUser] = useState(() => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (!jwtToken) { return null; }
+    try {
+      console.log(jwtDecode(jwtToken));
+      const user = jwtDecode(jwtToken);
+      return {
+        _id: user._id,
+        username: user.username,
+        admin: user.admin,
+      };
+    } catch { return null; }
+   });
+  const navigate = useNavigate();
   
   //////////useEffect////////
+
+  useEffect(() => { if (!user) navigate("/not-authorized") }, [user, navigate]);
 
   useEffect(() => {
     handleProductsFromDB();
@@ -39,7 +49,8 @@ export default function GroceriesAppContainer() {
 
   //clear message go back to "/"
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
+    localStorage.removeItem("token");
+    setUser(null);
     navigate("/");
   };
 
@@ -219,12 +230,16 @@ export default function GroceriesAppContainer() {
   const handleClearCart = () => {
     setCartList([]);
   };
+
   /////////Renderer
   return (
     <div>
-      <NavBar quantity={cartList.length} />
+      <NavBar 
+      quantity={cartList.length}
+      user={user}
+      handleLogout={handleLogout}
+      />
       <div className="GroceriesApp-Container">
-        <h2>Welcome, {user.username}</h2>
       {user.admin === true && <button onClick={handleAddProduct}>Add New Product</button>}
       <button onClick={handleLogout}>Logout</button>
         {/* ProductForm need to be another page*/}
@@ -243,6 +258,7 @@ export default function GroceriesAppContainer() {
           productQuantity={productQuantity}
           handleEditProduct={handleEditProduct}
           handleDeleteProduct={handleDeleteProduct}
+          user={user}
         />
         <CartContainer
           cartList={cartList}

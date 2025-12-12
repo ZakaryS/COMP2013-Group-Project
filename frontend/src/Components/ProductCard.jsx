@@ -13,6 +13,7 @@ export default function ProductCard({
   handleEditProduct,
   _id,
   handleDeleteProduct,
+  user,
 }) {
   return (
     
@@ -29,7 +30,7 @@ export default function ProductCard({
       />
       <h3>{price}</h3>
       <button onClick={() => handleAddToCart(id)}>Add to Cart</button>
-      {user.role === "admin" && (
+      {user?.admin === true && (
       <>
         <button
           id="edit-button"
