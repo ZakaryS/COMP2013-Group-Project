@@ -5,6 +5,7 @@ import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
 import axios from "axios";
+import FilterPriceForm from "./FilterPriceForm";
 //import ProductForm from "./ProductForm";
 
 export default function GroceriesAppContainer() {
@@ -12,6 +13,7 @@ export default function GroceriesAppContainer() {
   const [productQuantity, setProductQuantity] = useState();
   const [cartList, setCartList] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [allProductList, setAllProductList] = useState([]);
   const [postResponse, setPostResponse] = useState("");
   const [formData, setFormData] = useState({
     productName: "",
@@ -66,6 +68,7 @@ export default function GroceriesAppContainer() {
     try {
       await axios.get("http://localhost:3000/products").then((result) => {
         setProductList(result.data);
+        setAllProductList(result.data);
         setProductQuantity(initialProductQuantity(result.data));
       });
     } catch (error) {
@@ -231,6 +234,12 @@ export default function GroceriesAppContainer() {
     setCartList([]);
   };
 
+  const handleFilterPrice = (e) => {
+    const maxPrice = e.target.value;
+    if (maxPrice === "all") { setProductList(allProductList); }
+    else { setProductList(allProductList.filter((product) => parseFloat(product.price.replace("$", "").replace(",", "")) < maxPrice)); }
+  };
+
   /////////Renderer
   return (
     <div>
@@ -240,7 +249,10 @@ export default function GroceriesAppContainer() {
       handleLogout={handleLogout}
       />
       <div className="GroceriesApp-Container">
+        <div>
+          <FilterPriceForm handleFilterPrice={handleFilterPrice}/>
       {user.admin === true && <button onClick={handleAddProduct}>Add New Product</button>}
+      <br/>
       <button onClick={handleLogout}>Logout</button>
         {/* ProductForm need to be another page*/}
         {/* <ProductForm
@@ -250,6 +262,7 @@ export default function GroceriesAppContainer() {
           formData={formData}
           isEditing={isEditing}
         /> */}
+        </div>
         <ProductsContainer
           products={productList}
           handleAddQuantity={handleAddQuantity}
