@@ -1,8 +1,15 @@
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+
 export default function NavBar({ quantity }) {
+  const jwtToken = Cookies.get("jwtToken");
+  const user = jwtDecode(jwtToken);
   return (
     <nav className="NavBar">
       <div className="NavDiv NavUser">
-        <h3>Hello, username</h3>
+        <h3>Hello, {user.username}</h3>
+        {/* logout buttom*/}
+        <button onClick={handleLogout}>Logout</button>
       </div>
       <div className="NavDiv NavTitle">
         <h2>Groceries App 🍎</h2>
