@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 const navigate = useNavigate();
-
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
 import axios from "axios";
-import ProductForm from "./ProductForm";
+//import ProductForm from "./ProductForm";
 
 export default function GroceriesAppContainer() {
   /////////// States ///////////
@@ -22,6 +23,9 @@ export default function GroceriesAppContainer() {
   });
   const [isEditing, setIsEditing] = useState(false);
 
+  // Cookie
+  const jwtToken = Cookies.get("jwtToken");
+  const user = jwtDecode(jwtToken);
   
   //////////useEffect////////
 
@@ -58,6 +62,8 @@ export default function GroceriesAppContainer() {
     }
   };
 
+  // add/edit-product stuff.
+  /*
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -92,7 +98,9 @@ export default function GroceriesAppContainer() {
       }
     }
   };
+  */
 
+  // Not necessary. Move to /edit-product
   const handleEditProduct = (product) => {
     setFormData({
       productName: product.productName,
@@ -105,6 +113,7 @@ export default function GroceriesAppContainer() {
     setPostResponse("");
   };
 
+  // This too.
   const handleUpdateProduct = async (productId) => {
     try {
       await axios
@@ -216,7 +225,7 @@ export default function GroceriesAppContainer() {
       <NavBar quantity={cartList.length} />
       <div className="GroceriesApp-Container">
         <h2>Welcome, {user.username}</h2>
-      {user.role === "admin" && <button onClick={handleAddProduct}>Add New Product</button>}
+      {user.admin === true && <button onClick={handleAddProduct}>Add New Product</button>}
       <button onClick={handleLogout}>Logout</button>
         {/* ProductForm need to be another page*/}
         {/* <ProductForm

@@ -13,7 +13,6 @@ export default function ProductCard({
   handleEditProduct,
   _id,
   handleDeleteProduct,
-  user
 }) {
   return (
     

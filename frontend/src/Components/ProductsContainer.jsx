@@ -15,7 +15,6 @@ export default function ProductsContainer({
         <ProductCard
           key={product.id}
           {...product}
-          user={user}
           handleAddQuantity={handleAddQuantity}
           handleRemoveQuantity={handleRemoveQuantity}
           handleAddToCart={handleAddToCart}
