@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Product = require("./models/product");
 const User = require("./models/user");
-require("dotenv").config({ path: './.env'});
+require("dotenv").config({ path: './backend/.env'});
 const { DB_URI, SECRET_KEY } = process.env;
 
 server.use(cors());
