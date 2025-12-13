@@ -18,10 +18,9 @@ function App() {
           <Route path="/" element={<LoginPage/>}/>
           <Route path="/create-user" element={<RegisterPage />} />
           <Route path="/main" element={<GroceriesAppContainer/>}/>
-          <Route path="/not-authorized" element={<NotAuthorizedPage/>}/>
-
           <Route path="/add-product" element={<AddProduct />} />
-
+          <Route path="/edit-product" element={<EditProduct/>}/>
+          <Route path="/not-authorized" element={<NotAuthorizedPage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         
         </Routes>
