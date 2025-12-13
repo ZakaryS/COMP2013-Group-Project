@@ -39,8 +39,7 @@ export default function GroceriesAppContainer() {
   const navigate = useNavigate();
   
   //////////useEffect////////
-
-  useEffect(() => { if (!user) navigate("/not-authorized") }, [user, navigate]);
+  useEffect(() => { if (!user || user === null) navigate("/not-authorized") }, [user, navigate]);
 
   useEffect(() => {
     handleProductsFromDB();
