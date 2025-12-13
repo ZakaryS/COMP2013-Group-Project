@@ -13,7 +13,7 @@ export default function EditProduct(){
 
     //useEffect
     useEffect(() => {
-      handleOnEdit();
+      handleOnEdit(id);
     });
 
 
@@ -47,6 +47,7 @@ export default function EditProduct(){
       console.log(error);
     }
   }
+
 
   const handleOnUpdate = async (id) => {
     try{

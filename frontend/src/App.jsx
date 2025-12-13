@@ -17,7 +17,7 @@ function App() {
           <Route path="/create-user" element={<RegisterPage />} />
           <Route path="/main" element={<GroceriesAppContainer/>}/>
           <Route path="/not-authorized" element={<NotAuthorizedPage/>}/>
-          <Route path="/edit-product" element={<EditProduct/>}/>
+          <Route path="/edit-product/:id" element={<EditProduct/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
       </Router>
