@@ -5,6 +5,7 @@ import LoginPage from "./Components/LoginPage";
 import RegisterPage from "./Components/RegisterPage";
 import NotAuthorizedPage from "./Components/NotAuthorizedPage";
 import NotFoundPage from "./Components/NotFoundPage";
+import EditProduct from "./Components/EditProduct";
 import GroceriesAppContainer from "./Components/GroceriesAppContainer";
 import AddProduct from "./Components/AddProduct";
 import EditProduct from "./Components/EditProduct";

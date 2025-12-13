@@ -1,3 +1,21 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import ProductForm from "./ProductForm";
+
+export default function EditProduct(){
+
+    const [formData, setFormData] = useState({
+    productName: "",
+    brand: "",
+    image: "",
+    price: ""
+    });
+
+    //useEffect
+    useEffect(() => {
+      handleOnEdit(id);
+    });
+
 import EditForm from "./EditForm"
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +44,16 @@ export default function EditProduct(){
         });
     };
 
+    const handleOnSubmit = async (e) => {
+      e.preventDefault();
+      try{
+          handleOnUpdate(formData.id);
+          handleResetForm()
+      } catch(error) {
+          console.log(error.message);
+      }
+  };
+
     const handleOnEdit = async (id) => {
     try {
       const productToEdit = await axios.get(`http://localhost:3000/products/${id}`);
@@ -41,6 +69,7 @@ export default function EditProduct(){
     }
   }
 
+
   const handleOnUpdate = async (id) => {
     try{
       const result = await axios.patch(`http://localhost:3000/products/${id}`, formData);
@@ -53,8 +82,11 @@ export default function EditProduct(){
 
     return (
         
-        <EditForm
+        <ProductForm 
         formData={formData}
+        handleOnSubmit={handleOnSubmit} 
+        handleOnChange={handleOnChange}
+        isEditing={true}
         />
         
     )

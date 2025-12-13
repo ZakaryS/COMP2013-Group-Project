@@ -107,6 +107,7 @@ server.delete("/products/:id", async (request, response) => {
   }
 });
 
+//patch a product by id
 server.patch("/products/:id", async (request, response) => {
   const prodId = request.params.id;
   const { productName, brand, image, price, id } = request.body;
@@ -125,3 +126,14 @@ server.patch("/products/:id", async (request, response) => {
     console.log(error.message);
   }
 });
+
+//get one product by id
+server.get("/products/:id", async (request, response) => {
+  const {id} = request.params;
+  try{
+    const productToEdit = await Product.findOne({id: id});
+    response.send(productToEdit)
+  } catch(error) {
+    response.status(500).send({message: error.message});
+  }
+})
