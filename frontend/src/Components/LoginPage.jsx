@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FormComponent from "./FormComponent.jsx";
-import Cookies from "js-cookie";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -23,7 +22,7 @@ export default function LoginPage() {
             setPostResponse(response.data.message);
              setMessageColor("green");
             if (response.status === 201) {
-                Cookies.set("jwt-authorization", response.data.token);
+                localStorage.setItem("jwtToken", response.data.token);
                 navigate("/main");
             }
         } catch (error) {

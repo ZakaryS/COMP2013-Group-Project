@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
 import axios from "axios";
-import ProductForm from "./ProductForm";
+import FilterPriceForm from "./FilterPriceForm";
+//import ProductForm from "./ProductForm";
 
 export default function GroceriesAppContainer() {
   /////////// States ///////////
   const [productQuantity, setProductQuantity] = useState();
   const [cartList, setCartList] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [allProductList, setAllProductList] = useState([]);
   const [postResponse, setPostResponse] = useState("");
   const [formData, setFormData] = useState({
     productName: "",
@@ -18,12 +22,41 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-
+  const [user, setUser] = useState(() => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (!jwtToken) { return null; }
+    try {
+      console.log(jwtDecode(jwtToken));
+      const user = jwtDecode(jwtToken);
+      return {
+        _id: user._id,
+        username: user.username,
+        admin: user.admin,
+      };
+    } catch { return null; }
+   });
+  const navigate = useNavigate();
+  
   //////////useEffect////////
+
+  useEffect(() => { if (!user) navigate("/not-authorized") }, [user, navigate]);
 
   useEffect(() => {
     handleProductsFromDB();
   }, [postResponse]);
+
+
+  //jump to addproduct page
+  const handleAddProduct = () => navigate("/add-product");
+
+  //clear message go back to "/"
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
+  };
+
+
 
   ////////Handlers//////////
   const initialProductQuantity = (prods) =>
@@ -35,6 +68,7 @@ export default function GroceriesAppContainer() {
     try {
       await axios.get("http://localhost:3000/products").then((result) => {
         setProductList(result.data);
+        setAllProductList(result.data);
         setProductQuantity(initialProductQuantity(result.data));
       });
     } catch (error) {
@@ -42,6 +76,8 @@ export default function GroceriesAppContainer() {
     }
   };
 
+  // add/edit-product stuff.
+  /*
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -76,7 +112,9 @@ export default function GroceriesAppContainer() {
       }
     }
   };
+  */
 
+  // Not necessary. Move to /edit-product
   const handleEditProduct = (product) => {
     setFormData({
       productName: product.productName,
@@ -89,6 +127,7 @@ export default function GroceriesAppContainer() {
     setPostResponse("");
   };
 
+  // This too.
   const handleUpdateProduct = async (productId) => {
     try {
       await axios
@@ -194,18 +233,35 @@ export default function GroceriesAppContainer() {
   const handleClearCart = () => {
     setCartList([]);
   };
+
+  const handleFilterPrice = (e) => {
+    const maxPrice = e.target.value;
+    if (maxPrice === "all") { setProductList(allProductList); }
+    else { setProductList(allProductList.filter((product) => parseFloat(product.price.replace("$", "").replace(",", "")) < maxPrice)); }
+  };
+
   /////////Renderer
   return (
     <div>
-      <NavBar quantity={cartList.length} />
+      <NavBar 
+      quantity={cartList.length}
+      user={user}
+      handleLogout={handleLogout}
+      handleAddProduct={handleAddProduct}
+      />
       <div className="GroceriesApp-Container">
-        <ProductForm
+        <div>
+          <FilterPriceForm handleFilterPrice={handleFilterPrice}/>
+      <br/>
+        {/* ProductForm need to be another page*/}
+        {/* <ProductForm
           handleOnSubmit={handleOnSubmit}
           postResponse={postResponse}
           handleOnChange={handleOnChange}
           formData={formData}
           isEditing={isEditing}
-        />
+        /> */}
+        </div>
         <ProductsContainer
           products={productList}
           handleAddQuantity={handleAddQuantity}
@@ -214,6 +270,7 @@ export default function GroceriesAppContainer() {
           productQuantity={productQuantity}
           handleEditProduct={handleEditProduct}
           handleDeleteProduct={handleDeleteProduct}
+          user={user}
         />
         <CartContainer
           cartList={cartList}

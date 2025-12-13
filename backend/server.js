@@ -37,7 +37,7 @@ server.post("/login", async (request, response) => {
     if (!user) { return response.status(404).send({ message: "Username does not exist!" }); }
     const match = await bcrypt.compare(password, user.password);
     if (!match) { return response.status(403).send({ message: "Bad username or password!" }); }
-    const jwtToken = jwt.sign({ id: user._id, username, admin }, SECRET_KEY);
+    const jwtToken = jwt.sign({ _id: user._id, username, admin: user.admin }, SECRET_KEY);
     return response.status(201).send({ message: "User Authenticated!", token: jwtToken });
   } catch (error) { response.status(500).send({ message: error.message }); }
 });

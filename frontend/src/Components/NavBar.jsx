@@ -1,11 +1,19 @@
-export default function NavBar({ quantity }) {
+export default function NavBar({
+  quantity,
+  user,
+  handleLogout,
+  handleAddProduct,
+}) {
   return (
     <nav className="NavBar">
       <div className="NavDiv NavUser">
-        <h3>Hello, username</h3>
+        <h3>Hello, {user.username}</h3>
+        {/* logout buttom*/}
+        <button onClick={handleLogout}>Logout</button>
       </div>
       <div className="NavDiv NavTitle">
         <h2>Groceries App 🍎</h2>
+        {user.admin === true && <button onClick={handleAddProduct}>Add New Product</button>}
       </div>
       <div className="NavDiv NavCart">
         <img
