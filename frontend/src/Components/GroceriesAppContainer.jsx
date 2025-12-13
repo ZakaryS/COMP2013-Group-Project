@@ -22,6 +22,7 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+
   const [user, setUser] = useState(() => {
     const jwtToken = localStorage.getItem("jwtToken");
     if (!jwtToken) { return null; }
@@ -38,8 +39,7 @@ export default function GroceriesAppContainer() {
   const navigate = useNavigate();
   
   //////////useEffect////////
-
-  useEffect(() => { if (!user) navigate("/not-authorized") }, [user, navigate]);
+  useEffect(() => { if (!user || user === null) navigate("/not-authorized") }, [user, navigate]);
 
   useEffect(() => {
     handleProductsFromDB();
@@ -56,7 +56,7 @@ export default function GroceriesAppContainer() {
 
   //clear message go back to "/"
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwtToken");
     setUser(null);
     navigate("/");
   };
