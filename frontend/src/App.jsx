@@ -7,6 +7,9 @@ import NotAuthorizedPage from "./Components/NotAuthorizedPage";
 import NotFoundPage from "./Components/NotFoundPage";
 import GroceriesAppContainer from "./Components/GroceriesAppContainer";
 
+import AddProduct from "./Components/AddProduct";
+
+
 function App() {
   return (
     <>
@@ -16,7 +19,11 @@ function App() {
           <Route path="/create-user" element={<RegisterPage />} />
           <Route path="/main" element={<GroceriesAppContainer/>}/>
           <Route path="/not-authorized" element={<NotAuthorizedPage/>}/>
+
+          <Route path="/add-product" element={<AddProduct />} />
+
           <Route path="*" element={<NotFoundPage/>}/>
+        
         </Routes>
       </Router>
     </>
