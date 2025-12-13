@@ -1,12 +1,37 @@
-import EditForm from "./EditForm"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import ProductForm from "./ProductForm";
 
 export default function EditProduct(){
+
+    const [formData, setFormData] = useState({
+    productName: "",
+    brand: "",
+    image: "",
+    price: ""
+    });
+
+    //useEffect
+    useEffect(() => {
+      handleOnEdit();
+    });
+
 
     const handleOnChange = (e) => {
         setFormData((prevData) => {
             return { ...prevData, [e.target.name]: e.target.value }
         });
     };
+
+    const handleOnSubmit = async (e) => {
+      e.preventDefault();
+      try{
+          handleOnUpdate(formData.id);
+          handleResetForm()
+      } catch(error) {
+          console.log(error.message);
+      }
+  };
 
     const handleOnEdit = async (id) => {
     try {
@@ -35,8 +60,11 @@ export default function EditProduct(){
 
     return (
         
-        <EditForm
+        <ProductForm 
         formData={formData}
+        handleOnSubmit={handleOnSubmit} 
+        handleOnChange={handleOnChange}
+        isEditing={true}
         />
         
     )

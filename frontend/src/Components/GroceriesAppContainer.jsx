@@ -48,6 +48,7 @@ export default function GroceriesAppContainer() {
 
   //jump to addproduct page
   const handleAddProduct = () => navigate("/add-product");
+  const handleEditProduct = () => navigate("/edit-product");
 
   //clear message go back to "/"
   const handleLogout = () => {
@@ -114,6 +115,7 @@ export default function GroceriesAppContainer() {
   };
   */
 
+  /*
   // Not necessary. Move to /edit-product
   const handleEditProduct = (product) => {
     setFormData({
@@ -126,6 +128,7 @@ export default function GroceriesAppContainer() {
     setIsEditing(true);
     setPostResponse("");
   };
+  */
 
   // This too.
   const handleUpdateProduct = async (productId) => {

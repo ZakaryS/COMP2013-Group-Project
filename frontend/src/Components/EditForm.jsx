@@ -1,6 +1,6 @@
 export default function EditForm({
-    FormData,
-    handleOnUpdate,
+    formData,
+    handleOnSubmit,
     handleOnChange,
 }) {
     return (
