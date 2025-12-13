@@ -2,11 +2,28 @@ import React, { useState } from "react";
 import ProductForm from "./ProductForm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 
 export default function AddProduct() {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState(() => {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) { return null; }
+      try {
+        console.log(jwtDecode(jwtToken));
+        const user = jwtDecode(jwtToken);
+        return {
+          _id: user._id,
+          username: user.username,
+          admin: user.admin,
+        };
+      } catch { return null; }
+     });
+    
+    useEffect(() => { if (!user || user === null) navigate("/not-authorized") }, [user, navigate]);
 
 
   const [formData, setFormData] = useState({

@@ -22,6 +22,7 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+
   const [user, setUser] = useState(() => {
     const jwtToken = localStorage.getItem("jwtToken");
     if (!jwtToken) { return null; }

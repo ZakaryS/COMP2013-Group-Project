@@ -1,6 +1,24 @@
 import EditForm from "./EditForm"
+import { useNavigate } from "react-router-dom";
 
 export default function EditProduct(){
+
+    const [user, setUser] = useState(() => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (!jwtToken) { return null; }
+    try {
+      console.log(jwtDecode(jwtToken));
+      const user = jwtDecode(jwtToken);
+      return {
+        _id: user._id,
+        username: user.username,
+        admin: user.admin,
+      };
+    } catch { return null; }
+   });
+  const navigate = useNavigate();
+  
+  useEffect(() => { if (!user || user === null) navigate("/not-authorized") }, [user, navigate]);
 
     const handleOnChange = (e) => {
         setFormData((prevData) => {
