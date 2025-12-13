@@ -51,7 +51,7 @@ export default function GroceriesAppContainer() {
 
   //clear message go back to "/"
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwtToken");
     setUser(null);
     navigate("/");
   };
