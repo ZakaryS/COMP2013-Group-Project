@@ -247,13 +247,12 @@ export default function GroceriesAppContainer() {
       quantity={cartList.length}
       user={user}
       handleLogout={handleLogout}
+      handleAddProduct={handleAddProduct}
       />
       <div className="GroceriesApp-Container">
         <div>
           <FilterPriceForm handleFilterPrice={handleFilterPrice}/>
-      {user.admin === true && <button onClick={handleAddProduct}>Add New Product</button>}
       <br/>
-      <button onClick={handleLogout}>Logout</button>
         {/* ProductForm need to be another page*/}
         {/* <ProductForm
           handleOnSubmit={handleOnSubmit}
