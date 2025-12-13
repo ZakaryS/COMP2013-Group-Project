@@ -6,8 +6,8 @@ import RegisterPage from "./Components/RegisterPage";
 import NotAuthorizedPage from "./Components/NotAuthorizedPage";
 import NotFoundPage from "./Components/NotFoundPage";
 import GroceriesAppContainer from "./Components/GroceriesAppContainer";
-
 import AddProduct from "./Components/AddProduct";
+import EditProduct from "./Components/EditProduct";
 
 
 function App() {
